@@ -1,1 +1,81 @@
-# SQLi-to-DB-Exfiltration
+# 🛡️ Exploitation Showcase: SQLi to Full Database Takeover
+**A comprehensive technical walk-through of a successful vulnerability chain discovery and data exfiltration.**
+
+![Status](https://img.shields.io/badge/Audit-Successful-success?style=for-the-badge)
+![Type](https://img.shields.io/badge/Vulnerability-SQL_Injection-red?style=for-the-badge)
+![Target](https://img.shields.io/badge/Platform-Linux_Ubuntu-orange?style=for-the-badge)
+
+## 📋 Executive Summary
+This repository documents a complete end-to-end security audit. Using proprietary automation, I identified a critical SQL injection (SQLi) vulnerability in a web application running on **Nginx 1.19.0** and **PHP 5.6.40**. The vulnerability allowed for unauthorized access to the backend database, leading to the successful exfiltration of the entire `users` table, including plaintext credentials and sensitive PII.
+
+---
+
+## 🔬 Phase 1: Automated Discovery with Bubble-Bash
+The exploitation lifecycle began with a scan using **[Bubble-Bash v37.0](https://github.com/YOUR_USERNAME/Bubble-Bash)**. The scanner's event-driven engine identified a hidden endpoint and immediately flagged a potential SQLi vulnerability by detecting backend syntax errors upon injecting an escape character (`'`).
+
+### **Initial Reconnaissance Log:**
+![Discovery Log](evidence/01_bubble_discovery.png)
+* **Scan Start**: Tue Feb 17 01:14:11 PM EST 2026
+* **Target**: `http://testphp.vulnweb.com`
+* **Finding**: `└─ [!!!] SQLi VULNERABILITY DETECTED`
+
+---
+
+## 🔓 Phase 2: Vulnerability Confirmation & Mapping
+Following discovery, `sqlmap` was utilized to validate the injection point on the `cat` parameter of the `listproducts.php` endpoint.
+
+![SQLMap Scan](evidence/02_sqlmap_scan.png)
+
+### **Technical Findings:**
+* **Back-end DBMS**: MySQL >= 5.6
+* **Operating System**: Linux Ubuntu
+* **Injection Types Identified**:
+    * **Boolean-based blind**: `AND boolean-based blind - WHERE or HAVING clause`
+    * **Error-based**: `MySQL >= 5.6 AND error-based`
+    * **Time-based blind**: `MySQL >= 5.0.12 AND time-based blind (query SLEEP)`
+    * **UNION query**: `Generic UNION query (NULL) - 11 columns`
+
+---
+
+## 🗄️ Phase 3: Database & Schema Enumeration
+The vulnerability provided deep access to the database architecture, allowing for the mapping of the `acuart` database and the extraction of sensitive tables.
+
+![Schema Enumeration](evidence/03_schema_enumeration.png)
+
+### **Database Inventory:**
+1. `acuart`
+2. `information_schema`
+
+### **Target Table: `users`**
+The `acuart.users` table was found to contain 8 critical columns, including `uname` (Username), `pass` (Password), `email`, and `cc` (Credit Card / Sensitive Data).
+
+---
+
+## 💾 Phase 4: Data Exfiltration (Proof of Concept)
+Final exfiltration demonstrated a complete breach of confidentiality. I successfully dumped records from the `users` table, revealing insecure data storage practices.
+
+![Data Dump](evidence/04_data_dump.png)
+
+### **Extracted Entry Preview:**
+* **Username**: `test`
+* **Password**: `test`
+* **Email**: `you`
+* **Notes**: Includes stored XSS vectors such as `<script>window.location=...</script>`
+
+---
+
+## 🛡️ Technical Conclusion & Risk Assessment
+The successful exploitation of this vulnerability represents a **Critical Risk** to organizational data integrity and citizen privacy.
+
+* **Mass Data Exfiltration**: Unauthorized access to PII and credentials constitutes a major security breach.
+* **Account Takeover (ATO)**: Access to plaintext passwords allows for immediate account compromise.
+* **Persistent Threat Vector**: Stored XSS vectors identified in the database dump suggest a secondary attack surface for session hijacking.
+* **Legacy Risk**: The use of end-of-life software (**PHP 5.6.40**) significantly increases the attack surface.
+
+---
+
+## ⚖️ Ethics & Disclaimer
+This documentation is for **Educational and Ethical Security Testing** only. All screenshots and data were gathered from a legally authorized vulnerability testing environment (`testphp.vulnweb.com`).
+
+---
+**Lead Researcher:** [Your Name]
