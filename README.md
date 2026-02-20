@@ -11,10 +11,11 @@ This repository documents a complete end-to-end security audit. Using proprietar
 ---
 
 ## 🔬 Phase 1: Automated Discovery with Bubble-Bash
-The exploitation lifecycle began with a scan using **[Bubble-Bash v37.0](https://github.com/YOUR_USERNAME/Bubble-Bash)**. The scanner's event-driven engine identified a hidden endpoint and immediately flagged a potential SQLi vulnerability by detecting backend syntax errors upon injecting an escape character (`'`).
+The exploitation lifecycle began with a scan using **[Bubble-Bash v37.0](https://github.com/MoriartyPuth/bubble-scanner)**. The scanner's event-driven engine identified a hidden endpoint and immediately flagged a potential SQLi vulnerability by detecting backend syntax errors upon injecting an escape character (`'`).
 
 ### **Initial Reconnaissance Log:**
-![Discovery Log](evidence/01_bubble_discovery.png)
+<img width="718" height="281" alt="Screenshot 2026-02-18 013405" src="https://github.com/user-attachments/assets/1663fc66-6589-4a4c-a86d-0dc83ae602e4" />
+
 * **Scan Start**: Tue Feb 17 01:14:11 PM EST 2026
 * **Target**: `http://testphp.vulnweb.com`
 * **Finding**: `└─ [!!!] SQLi VULNERABILITY DETECTED`
@@ -24,7 +25,7 @@ The exploitation lifecycle began with a scan using **[Bubble-Bash v37.0](https:/
 ## 🔓 Phase 2: Vulnerability Confirmation & Mapping
 Following discovery, `sqlmap` was utilized to validate the injection point on the `cat` parameter of the `listproducts.php` endpoint.
 
-![SQLMap Scan](evidence/02_sqlmap_scan.png)
+<img width="682" height="58" alt="Screenshot 2026-02-18 013631" src="https://github.com/user-attachments/assets/f4b5cd6d-50ae-4670-85f0-d248145135d1" /><img width="1059" height="539" alt="Screenshot 2026-02-18 013658" src="https://github.com/user-attachments/assets/2760158b-21e5-4ca2-8077-31bab0701fca" />
 
 ### **Technical Findings:**
 * **Back-end DBMS**: MySQL >= 5.6
@@ -40,7 +41,9 @@ Following discovery, `sqlmap` was utilized to validate the injection point on th
 ## 🗄️ Phase 3: Database & Schema Enumeration
 The vulnerability provided deep access to the database architecture, allowing for the mapping of the `acuart` database and the extraction of sensitive tables.
 
-![Schema Enumeration](evidence/03_schema_enumeration.png)
+<img width="843" height="65" alt="Screenshot 2026-02-18 014138" src="https://github.com/user-attachments/assets/77f04be5-6fb2-4946-bf6e-8d176142bf3d" /><img width="975" height="415" alt="Screenshot 2026-02-18 014201" src="https://github.com/user-attachments/assets/05b4073d-f111-41cd-9960-6e0815681b3e" />
+
+
 
 ### **Database Inventory:**
 1. `acuart`
@@ -54,7 +57,7 @@ The `acuart.users` table was found to contain 8 critical columns, including `una
 ## 💾 Phase 4: Data Exfiltration (Proof of Concept)
 Final exfiltration demonstrated a complete breach of confidentiality. I successfully dumped records from the `users` table, revealing insecure data storage practices.
 
-![Data Dump](evidence/04_data_dump.png)
+<img width="816" height="62" alt="Screenshot 2026-02-18 014217" src="https://github.com/user-attachments/assets/263b5179-ea9e-4a8b-b07e-0563b9fcad05" /><img width="1394" height="547" alt="Screenshot 2026-02-18 014237" src="https://github.com/user-attachments/assets/a2056801-4506-40ed-94d9-8aed20336442" />
 
 ### **Extracted Entry Preview:**
 * **Username**: `test`
@@ -77,5 +80,5 @@ The successful exploitation of this vulnerability represents a **Critical Risk**
 ## ⚖️ Ethics & Disclaimer
 This documentation is for **Educational and Ethical Security Testing** only. All screenshots and data were gathered from a legally authorized vulnerability testing environment (`testphp.vulnweb.com`).
 
----
-**Lead Researcher:** [Your Name]
+
+
