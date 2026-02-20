@@ -11,7 +11,7 @@ This repository documents a complete end-to-end security audit. Using proprietar
 ---
 
 ## 🔬 Phase 1: Automated Discovery with Bubble-Bash
-The exploitation lifecycle began with a scan using **[Bubble-Bash v37.0](https://github.com/MoriartyPuth/bubble-scanner)**. The scanner's event-driven engine identified a hidden endpoint and immediately flagged a potential SQLi vulnerability by detecting backend syntax errors upon injecting an escape character (`'`).
+The exploitation lifecycle began with a scan using **[Bubble-Scanner](https://github.com/MoriartyPuth/bubble-scanner)**. The scanner's event-driven engine identified a hidden endpoint and immediately flagged a potential SQLi vulnerability by detecting backend syntax errors upon injecting an escape character (`'`).
 
 ### **Initial Reconnaissance Log:**
 <img width="718" height="281" alt="Screenshot 2026-02-18 013405" src="https://github.com/user-attachments/assets/1663fc66-6589-4a4c-a86d-0dc83ae602e4" />
