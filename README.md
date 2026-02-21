@@ -17,7 +17,7 @@ The exploitation lifecycle began with a scan using **[Bubble-Scanner](https://gi
 <img width="718" height="281" alt="Screenshot 2026-02-18 013405" src="https://github.com/user-attachments/assets/1663fc66-6589-4a4c-a86d-0dc83ae602e4" />
 
 * **Scan Start**: Tue Feb 17 01:14:11 PM EST 2026
-* **Target**: `http://testphp.vulnweb.com`
+* **Target**: [http://testphp.vulnweb.com](http://testphp.vulnweb.com/)
 * **Finding**: `└─ [!!!] SQLi VULNERABILITY DETECTED`
 
 ---
